@@ -2,6 +2,7 @@
 export interface CinematicPrompt {
   prompt: string;
   translation: string;
+  chinesePrompt: string;
 }
 
 export interface Character {

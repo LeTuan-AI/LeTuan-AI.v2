@@ -220,8 +220,8 @@ export const generateFinalPrompt = async (
     "   - Action: (" + (anyCameo ? "BẮT ĐẦU bằng câu: 'Same cameo character, same original outfit, no costume change. lower body wearing black pants and black shoes.' " : "") + "Sau đó mô tả hành động theo QUY TẮC 3 GIÂY: 0-3s, 3-6s, 6-9s, 9-12s. SỬ DỤNG TÊN VIẾT HOA (Ví dụ: LÊ TUẤN, ĐÌNH THƯỢC) kèm vai trò và mối quan hệ CỤ THỂ ở lần nhắc đầu tiên. PHẢI áp dụng VÒNG LẶP HÀNH ĐỘNG-HỆ QUẢ: mô tả đòn đánh kèm kết quả vật lý (vỡ bàn, văng xa, đổ sụp). TUYỆT ĐỐI không sử dụng quá 3 nhân vật chính trong một prompt. " + (anyCameo ? "TUYỆT ĐỐI KHÔNG mô tả trang phục cho các nhân vật có đánh dấu CAMEO." : "Mô tả trang phục dựa trên danh sách nhân vật được cung cấp.") + ").\n" +
     "3. TỐI GIẢN HÀNH ĐỘNG: Tuyệt đối không mô tả tiểu tiết vật lý hay tính từ cảm xúc. Chỉ mô tả SỰ KIỆN và TÌNH HUỐNG khách quan.\n" +
     "4. CẤM CHỈ ĐỊNH GÓC MÁY: Không dùng bất kỳ từ ngữ nào về góc máy hay kỹ thuật quay phim.\n" +
-    "5. DỊCH THUẬT 100% (FULL MIRROR): Bản dịch Tiếng Việt phải khớp 100% với bản Tiếng Anh về cả cấu trúc và nội dung. Dịch toàn bộ nội dung sang Tiếng Việt, bao gồm cả các tiêu đề mục (Location -> Địa điểm, Time -> Thời gian, Style -> Phong cách, Action -> Hành động) và các vai trò nhân vật (Hero -> Anh hùng, Villain -> Kẻ phản diện, Wife -> Vợ, Partner -> Bạn đồng hành...). TUYỆT ĐỐI KHÔNG giữ lại bất kỳ từ Tiếng Anh nào trong phần 'translation'.\n\n" +
-    "LƯU Ý QUAN TRỌNG: TUYỆT ĐỐI KHÔNG tạo prompt tiếng Trung. Chỉ tập trung vào bản Tiếng Anh và Tiếng Việt theo cấu trúc trên.";
+    "5. DỊCH THUẬT ĐA NGÔN NGỮ (FULL MIRROR): Bản dịch Tiếng Việt và Tiếng Trung (Giản thể) phải khớp 100% với bản Tiếng Anh về cả cấu trúc và nội dung. Dịch toàn bộ nội dung sang Tiếng Việt và Tiếng Trung, bao gồm cả các tiêu đề mục (Location, Time, Style, Action) và các vai trò nhân vật. TUYỆT ĐỐI KHÔNG giữ lại bất kỳ từ Tiếng Anh nào trong phần 'translation' và 'chinesePrompt'.\n\n" +
+    "LƯU Ý QUAN TRỌNG: Hãy tạo bản dịch Tiếng Việt vào trường 'translation' và bản dịch Tiếng Trung vào trường 'chinesePrompt'.";
 
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
@@ -233,9 +233,10 @@ export const generateFinalPrompt = async (
         type: Type.OBJECT,
         properties: {
           prompt: { type: Type.STRING },
-          translation: { type: Type.STRING }
+          translation: { type: Type.STRING },
+          chinesePrompt: { type: Type.STRING }
         },
-        required: ["prompt", "translation"]
+        required: ["prompt", "translation", "chinesePrompt"]
       }
     }
   });

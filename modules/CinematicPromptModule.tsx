@@ -16,6 +16,7 @@ import {
   Scissors,
   Send,
   Plus,
+  Minus,
   Trash2,
   Edit3,
   ArrowLeft,
@@ -474,26 +475,68 @@ const CinematicPromptModule: React.FC = () => {
 
                   <div className="grid grid-cols-2 gap-6">
                     <div>
-                      <label className="luxury-label">
-                        Số tập phim
-                      </label>
-                      <input 
-                        type="number"
-                        value={numEpisodes}
-                        onChange={(e) => setNumEpisodes(parseInt(e.target.value) || 1)}
-                        className="input-field"
-                      />
+                      <label className="luxury-label">Số tập phim</label>
+                      <div className="flex items-center bg-luxury-purple border border-white/10 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-luxury-gold/40 focus-within:border-luxury-gold transition-all h-[52px] px-2">
+                        <button 
+                          onClick={() => setNumEpisodes(Math.max(1, numEpisodes - 1))}
+                          className="p-2 text-luxury-gold/60 hover:text-luxury-gold transition-colors active:scale-90"
+                          type="button"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <input 
+                          type="number"
+                          value={numEpisodes || ''}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === '') setNumEpisodes(0);
+                            else setNumEpisodes(parseInt(val) || 0);
+                          }}
+                          onBlur={() => {
+                            if (!numEpisodes || numEpisodes < 1) setNumEpisodes(1);
+                          }}
+                          className="flex-1 bg-transparent border-none text-center focus:ring-0 p-0 text-white font-bold text-sm"
+                        />
+                        <button 
+                          onClick={() => setNumEpisodes(numEpisodes + 1)}
+                          className="p-2 text-luxury-gold/60 hover:text-luxury-gold transition-colors active:scale-90"
+                          type="button"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                     <div>
-                      <label className="luxury-label">
-                        Phút mỗi tập
-                      </label>
-                      <input 
-                        type="number"
-                        value={durationPerEpisode}
-                        onChange={(e) => setDurationPerEpisode(parseInt(e.target.value) || 1)}
-                        className="input-field"
-                      />
+                      <label className="luxury-label">Phút mỗi tập</label>
+                      <div className="flex items-center bg-luxury-purple border border-white/10 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-luxury-gold/40 focus-within:border-luxury-gold transition-all h-[52px] px-2">
+                        <button 
+                          onClick={() => setDurationPerEpisode(Math.max(1, durationPerEpisode - 1))}
+                          className="p-2 text-luxury-gold/60 hover:text-luxury-gold transition-colors active:scale-90"
+                          type="button"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <input 
+                          type="number"
+                          value={durationPerEpisode || ''}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === '') setDurationPerEpisode(0);
+                            else setDurationPerEpisode(parseInt(val) || 0);
+                          }}
+                          onBlur={() => {
+                            if (!durationPerEpisode || durationPerEpisode < 1) setDurationPerEpisode(1);
+                          }}
+                          className="flex-1 bg-transparent border-none text-center focus:ring-0 p-0 text-white font-bold text-sm"
+                        />
+                        <button 
+                          onClick={() => setDurationPerEpisode(durationPerEpisode + 1)}
+                          className="p-2 text-luxury-gold/60 hover:text-luxury-gold transition-colors active:scale-90"
+                          type="button"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -641,15 +684,36 @@ const CinematicPromptModule: React.FC = () => {
                             />
                           </div>
                           <div className="md:w-48 flex flex-col justify-between items-end">
-                            <div className="flex items-center gap-2 bg-luxury-purple-dark/60 px-4 py-2 rounded-xl border border-white/10">
-                              <Clock className="w-3 h-3 text-luxury-gold" />
+                            <div className="flex items-center gap-1 bg-luxury-purple-dark/60 px-3 py-2 rounded-xl border border-white/10">
+                              <Clock className="w-3 h-3 text-luxury-gold mr-1" />
+                              <button 
+                                onClick={() => updateEpisode(ep.id, 'duration', Math.max(1, ep.duration - 1))}
+                                className="p-1 text-luxury-gold/60 hover:text-luxury-gold transition-colors active:scale-90"
+                                type="button"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
                               <input 
                                 type="number"
-                                value={ep.duration}
-                                onChange={(e) => updateEpisode(ep.id, 'duration', parseInt(e.target.value) || 1)}
-                                className="bg-transparent border-none text-xs font-black text-luxury-gold focus:ring-0 p-0 w-8 text-center"
+                                value={ep.duration || ''}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  if (val === '') updateEpisode(ep.id, 'duration', 0);
+                                  else updateEpisode(ep.id, 'duration', parseInt(val) || 0);
+                                }}
+                                onBlur={() => {
+                                  if (!ep.duration || ep.duration < 1) updateEpisode(ep.id, 'duration', 1);
+                                }}
+                                className="bg-transparent border-none text-xs font-black text-luxury-gold focus:ring-0 p-0 w-6 text-center"
                               />
-                              <span className="text-[10px] font-black text-luxury-gold/60 uppercase tracking-widest">Phút</span>
+                              <button 
+                                onClick={() => updateEpisode(ep.id, 'duration', ep.duration + 1)}
+                                className="p-1 text-luxury-gold/60 hover:text-luxury-gold transition-colors active:scale-90"
+                                type="button"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                              <span className="text-[10px] font-black text-luxury-gold/60 uppercase tracking-widest ml-1">Phút</span>
                             </div>
                             <button 
                               onClick={() => handleBreakdown(ep.id)}
@@ -943,9 +1007,30 @@ const CinematicPromptModule: React.FC = () => {
                                   {scene.finalPrompt.prompt}
                                 </p>
                                 <div className="h-px bg-emerald-500/10 mb-4" />
-                                <span className="text-[9px] font-black text-emerald-400/60 uppercase tracking-widest block mb-2">Bản dịch Tiếng Việt</span>
-                                <p className="text-xs text-white/80 leading-relaxed italic font-bold">
+                                <div className="flex justify-between items-center mb-2">
+                                  <span className="text-[9px] font-black text-emerald-400/60 uppercase tracking-widest block">Bản dịch Tiếng Việt</span>
+                                  <button 
+                                    onClick={() => copyToClipboard(scene.finalPrompt!.translation, scene.id + '-vi')}
+                                    className="text-emerald-400/40 hover:text-emerald-400 transition-colors"
+                                  >
+                                    {copied === scene.id + '-vi' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                                  </button>
+                                </div>
+                                <p className="text-xs text-white/80 leading-relaxed italic font-bold mb-4">
                                   {scene.finalPrompt.translation}
+                                </p>
+                                <div className="h-px bg-emerald-500/10 mb-4" />
+                                <div className="flex justify-between items-center mb-2">
+                                  <span className="text-[9px] font-black text-emerald-400/60 uppercase tracking-widest block">Bản dịch Tiếng Trung (Jimeng/Veo)</span>
+                                  <button 
+                                    onClick={() => copyToClipboard(scene.finalPrompt!.chinesePrompt, scene.id + '-zh')}
+                                    className="text-emerald-400/40 hover:text-emerald-400 transition-colors"
+                                  >
+                                    {copied === scene.id + '-zh' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                                  </button>
+                                </div>
+                                <p className="text-xs text-white/80 leading-relaxed font-bold">
+                                  {scene.finalPrompt.chinesePrompt}
                                 </p>
                               </div>
                             </div>
@@ -1064,9 +1149,31 @@ const CinematicPromptModule: React.FC = () => {
                                     </pre>
                                   </div>
                                   <div>
-                                    <label className="luxury-label mb-4 block text-emerald-400/60">Bản dịch Tiếng Việt</label>
+                                    <div className="flex justify-between items-center mb-4">
+                                      <label className="luxury-label block text-emerald-400/60 mb-0">Bản dịch Tiếng Việt</label>
+                                      <button 
+                                        onClick={() => copyToClipboard(scene.finalPrompt!.translation, scene.id + '-final-vi')}
+                                        className="text-emerald-400/40 hover:text-emerald-400 transition-colors"
+                                      >
+                                        {copied === scene.id + '-final-vi' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                                      </button>
+                                    </div>
                                     <div className="text-sm text-white/80 leading-relaxed bg-black/40 p-8 rounded-[1.5rem] border border-emerald-500/10 h-[220px] overflow-y-auto custom-scrollbar font-bold italic">
                                       {scene.finalPrompt.translation}
+                                    </div>
+                                  </div>
+                                  <div className="lg:col-span-2">
+                                    <div className="flex justify-between items-center mb-4">
+                                      <label className="luxury-label block text-emerald-400/60 mb-0">Bản dịch Tiếng Trung (Jimeng/Veo)</label>
+                                      <button 
+                                        onClick={() => copyToClipboard(scene.finalPrompt!.chinesePrompt, scene.id + '-final-zh')}
+                                        className="text-emerald-400/40 hover:text-emerald-400 transition-colors"
+                                      >
+                                        {copied === scene.id + '-final-zh' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                                      </button>
+                                    </div>
+                                    <div className="text-sm text-white/80 leading-relaxed bg-black/40 p-8 rounded-[1.5rem] border border-emerald-500/10 h-[150px] overflow-y-auto custom-scrollbar font-bold">
+                                      {scene.finalPrompt.chinesePrompt}
                                     </div>
                                   </div>
                                 </div>
